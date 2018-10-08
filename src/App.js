@@ -14,6 +14,7 @@ class App extends Component {
     updateSuperState: obj =>{
       this.setState(obj);
     }
+
   }
 
   componentDidMount() {
@@ -43,7 +44,7 @@ class App extends Component {
       client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
       query: "museum",
       near: "San Francisco",
-      limit: 15,
+      limit: 5,
       v: "20180110"
     }
     axios.get(endPoint + new URLSearchParams(parameters))
@@ -88,15 +89,34 @@ class App extends Component {
    var myMarker = this.state.markers.find(marker => marker.id === venue.venue.id)
    this.markerClicked(myMarker);
  }
+
+ toggleListView = ()=>{
+   console.log("menu is clicked")
+   var drawer = document.getElementsByTagName('nav')[0];
+   console.log(drawer)
+   if(drawer.className===""){
+     drawer.className="open";
+   }else{
+     drawer.className="";
+   }
+   console.log("after toggle "+drawer.className)
+
+ }
   render() {
     return (
       <div className="App">
         <header id="header">
           <h1>San Francisco Museums</h1>
+          <a id="menu" onClick={this.toggleListView}>
+            <i class="fa fa-bars"></i>
+          </a>
         </header>
+
         <main id="maincontent">
+          <nav>
           <SideBar {...this.state}
             listItemClicked={this.listItemClicked}/>
+            </nav>
           <Map {...this.state}
             markerClicked= {this.markerClicked}
             closeAllMarkers={this.closeAllMarkers}/>

@@ -4,11 +4,7 @@
   height : 100vh;
 }
 
-main{
-  height:85%;
-  display: flex;
-  flex-direction: row;
-}
+
 #header {
   width: 100%;
   height: 10%;
@@ -17,6 +13,7 @@ main{
   text-transform: uppercase;
   align-items: center;
   color: white;
+  letter-spacing: 2px;
 }
 
 #footer {
@@ -38,11 +35,14 @@ html, body {
   font-size: 10px;
   font-family: sans-serif;
 }
-.sideBar{
-  width: 25%;
-  height: 85%;
-}
 
+a{
+  cursor: pointer;
+}
+a:hover, a:focus {
+	color: #3397db;
+	text-decoration: none;
+}
 #search{
   width: 100%;
   height: 2rem;
@@ -65,4 +65,57 @@ html, body {
   display: flex;
   align-items: center;
   color: white;
+}
+h1{
+  display: inline;
+}
+#menu{
+  font-size: 1.5rem;
+
+}
+
+main{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 85%;
+}
+Map{
+  width: 100%;
+  height:85%;
+  z-index: 99;
+  position: relative;
+}
+
+nav{
+  z-index: 999;
+  height: 85%;
+  width: 300px;
+  position: absolute;
+  /* This trasform moves the drawer off canvas. */
+  -webkit-transform: translate(-300px, 0);
+  transform: translate(-300px, 0);
+  /* Optionally, we animate the drawer. */
+  transition: transform 0.3s ease;
+}
+
+
+
+nav.open {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+@media screen and (min-width: 600px){
+  nav {
+    position: relative;;
+    transform: translate(0,0);
+    width: 25%;
+  }
+  Map {
+    width: 75%;
+  }
+  #menu {
+    display: none;
+  }
 }
