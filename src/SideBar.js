@@ -4,22 +4,20 @@ import VenueList from './VenueList.js'
 class SideBar extends Component {
   state = {
     query: "",
-    venues: {}
   }
 
-  filterVenues =()=>{
-    if(this.state.query === ""){
-      return this.props.venues;
-    }else{
+  filterVenues= ()=>{
+    if(this.state.query){
       const places = this.props.venues.filter(
         place => place.venue.name.toLowerCase().includes(this.state.query)
       )
       return places;
+    }else{
+      return this.props.venues;
     }
   }
   queryChange = e=>{
-    this.setState({query : e.target.value.toLowerCase().trim()})
-
+    this.setState({query : e.target.value.toLowerCase().trim()});
     const markers = this.props.venues.map(place=>{
       const isMatched = place.venue.name.toLowerCase().includes(e.target.value.toLowerCase().trim());
       const marker = this.props.markers.find(marker => marker.id === place.venue.id);
@@ -35,11 +33,10 @@ class SideBar extends Component {
   render(){
     return (
       <div className="sideBar">
-        <input id={"search"} type={"search"} placeholder="Filter Venues" onChange={this.queryChange}/>
-
+        <input id="search" type="search" placeholder="Filter by Venue Names"
+          onChange={this.queryChange}/>
         <VenueList
           venues={this.filterVenues()}
-          markers={this.props.markers}
           listItemClicked={this.props.listItemClicked}/>
       </div>
     );

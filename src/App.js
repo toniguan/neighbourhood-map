@@ -7,14 +7,13 @@ import Map from './Map.js'
 class App extends Component {
   state = {
     venues : [],
-    center :{},
+    center :[],
     markers :[],
     zoom : 13,
     aplace : {},
     updateSuperState: obj =>{
       this.setState(obj);
     }
-
   }
 
   componentDidMount() {
@@ -30,8 +29,6 @@ class App extends Component {
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
         const venue = this.state.venues.find(venue=>venue.id===id)
-        console.log(venue)
-        console.log(response.data.response)
         this.setState({aplace:response.data.response.venue })
       })
       .catch(error =>{
@@ -46,11 +43,12 @@ class App extends Component {
       client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
       query: "museum",
       near: "San Francisco",
-      limit: 5,
+      limit: 15,
       v: "20180110"
     }
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
+        console.log(response.data.response)
         const venues = response.data.response.groups[0].items;
         const center = response.data.response.geocode.center;
         const markers = venues.map(place =>{
@@ -93,10 +91,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <SideBar {...this.state}
-          listItemClicked={this.listItemClicked}/>
-        <Map {...this.state}
-          markerClicked= {this.markerClicked}/>
+        <header id="header">
+          <h1>San Francisco Museums</h1>
+        </header>
+        <main id="maincontent">
+          <SideBar {...this.state}
+            listItemClicked={this.listItemClicked}/>
+          <Map {...this.state}
+            markerClicked= {this.markerClicked}
+            closeAllMarkers={this.closeAllMarkers}/>
+        </main>
+        <footer id="footer">Using Google Maps and Foursqure API</footer>
       </div>
     )
   }

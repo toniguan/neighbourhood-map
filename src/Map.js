@@ -6,7 +6,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
     defaultZoom={8}
     zoom={props.zoom}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+    defaultCenter={{ lat: 37.77493, lng: 1-122.41942 }}
     center={props.center}
   >
 
@@ -17,9 +17,9 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
           key={idx}
           position={{ lat: marker.lat, lng: marker.lng }}
           onClick={e=>{props.markerClicked(marker)}}
-          animation = {arr.length===1 ? google.maps.Animation.BOUNCE:""}>
+          animation = {marker.isOpen ? google.maps.Animation.BOUNCE:""}>
           {marker.isOpen && props.aplace.bestPhoto &&(
-            <InfoWindow>
+            <InfoWindow onCloseClick={props.closeAllMarkers}>
               <React.Fragment>
                 <img src={`${props.aplace.bestPhoto.prefix}200x200${props.aplace.bestPhoto.suffix}`} alt=""/>
                 <p>{props.aplace.name}</p>
@@ -33,7 +33,6 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
 
 class Map extends Component{
   render(){
-
     return(
       <MyMapComponent
         {...this.props}

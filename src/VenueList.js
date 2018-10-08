@@ -3,7 +3,7 @@ import Venue from './Venue.js'
 
 class VenueList extends Component {
   render(){
-    const {venues,markers} = this.props
+    const {venues} = this.props
 
     return (
       <ol className="venueList">
