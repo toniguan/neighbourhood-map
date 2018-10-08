@@ -2,16 +2,43 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
 import SideBar from './SideBar.js'
+import Map from './Map.js'
 
 class App extends Component {
   state = {
     venues : [],
-    map : {},
+    center :{},
     markers :[],
-    infowindow : {},
-    bounds : {},
+    zoom : 13,
+    aplace : {},
+    updateSuperState: obj =>{
+      this.setState(obj);
+    }
+
   }
 
+  componentDidMount() {
+    this.getVenues();
+  }
+  getVenueDetails=(id)=>{
+    const endPoint = `https://api.foursquare.com/v2/venues/${id}?`
+    const parameters = {
+      client_id: "OBRGOOQFRBSSSK35KAXHZ3L0BP24QE5MYPNDLGY1DZXMT00U",
+      client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
+      v: "20180110"
+    }
+    axios.get(endPoint + new URLSearchParams(parameters))
+      .then(response =>{
+        const venue = this.state.venues.find(venue=>venue.id===id)
+        console.log(venue)
+        console.log(response.data.response)
+        this.setState({aplace:response.data.response.venue })
+      })
+      .catch(error =>{
+        console.log("ERROR!!"  + error)
+      })
+    console.log(endPoint)
+  }
   getVenues = ()=>{
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
@@ -19,11 +46,23 @@ class App extends Component {
       client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
       query: "museum",
       near: "San Francisco",
+      limit: 5,
       v: "20180110"
     }
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
-        this.setState({venues : response.data.response.groups[0].items}, this.loadMap)
+        const venues = response.data.response.groups[0].items;
+        const center = response.data.response.geocode.center;
+        const markers = venues.map(place =>{
+          return {
+            lat : place.venue.location.lat,
+            lng : place.venue.location.lng,
+            isOpen : false,
+            isVisible : true,
+            id : place.venue.id,
+          }
+        });
+        this.setState({venues, center, markers});
 
       })
       .catch(error =>{
@@ -31,98 +70,36 @@ class App extends Component {
       })
   }
 
-  initGlobalVars = ()=>{
-    let infowindow = new window.google.maps.InfoWindow();
-    this.setState({infowindow});
-    let bounds = new window.google.maps.LatLngBounds();
-    this.setState({bounds});
-  }
-  createMarkers=()=>{
-    var myMarkers = []
-    this.state.venues.map(myVenue=>{
-      var marker = new window.google.maps.Marker({
-        position : {lat: myVenue.venue.location.lat, lng:myVenue.venue.location.lng},
-        title: myVenue.venue.name,
-        id : myVenue.venue.id,
-      });//marker
-      marker.addListener('click', ()=>{this.markerClicked(marker,this.state.infowindow)});
-      myMarkers.push(marker)
-    });//map
-    this.setState({markers : myMarkers});
-  }
-
-
-  showMarkers = (markers)=>{
-    for(var i = 0; i < markers.length; i++){
-      markers[i].setMap(this.state.map);
-      this.state.bounds.extend(markers[i].position);
-    }
-    this.state.map.fitBounds(this.state.bounds);
-  }
-
-  hideMarkers = (markers)=>{
-    for(var i = 0; i < markers.length; i++){
-      markers[i].setMap(null);
-    }
-  }
-  componentDidMount() {
-    this.getVenues()
-  }
-
-  loadMap = ()=>{
-    loadScript("https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCzf_g_JlklabDU1So6i1tN0qR5DxcCdGc&v=3&callback=initMap")
-    window.initMap = this.initMap
-  }
-
-  initMap = ()=>{
-    let amap = new window.google.maps.Map(document.getElementById('map'), {
-     center: {lat: 37.7749295, lng: -122.4194155},
-     zoom: 8
-    });
-    this.setState({map:amap});
-    this.initGlobalVars();
-    this.createMarkers();
-    this.showMarkers(this.state.markers);
- }// intiMap
-
- markerClicked(marker, infowindow){
-   infowindow.setContent(marker.title);
-   infowindow.open(this.state.map,marker);
+ closeAllMarkers = ()=>{
+   var myMarkers = this.state.markers.map(marker =>{
+     marker.isOpen = false;
+     return marker;
+   });
+   this.setState({markers : myMarkers})
  }
 
+ markerClicked = (marker)=>{
+   this.closeAllMarkers();
+   this.setState({aplace : {}})
+   marker.isOpen = true;
+   this.setState({markers : Object.assign(this.state.markers, marker)})
+   this.getVenueDetails(marker.id)
+ }
 
- listItemClicked(venue, idx){
-   this.hideMarkers(this.state.markers);
-   console.log("id is " + idx);
-   console.log(venue);
-
-  // this.state.markers.filter( marker => marker.id == venue.venue.id);
-
-
-  // console.log({this.state.markers});
-
+ listItemClicked = (venue)=>{
+   var myMarker = this.state.markers.find(marker => marker.id === venue.venue.id)
+   this.markerClicked(myMarker);
  }
   render() {
     return (
       <div className="App">
-        <SideBar
-          venues={this.state.venues}
+        <SideBar {...this.state}
           listItemClicked={this.listItemClicked}/>
-        <div id="map"></div>
+        <Map {...this.state}
+          markerClicked= {this.markerClicked}/>
       </div>
     )
   }
-}
-
-
-function loadScript(url){
-  var script0 = window.document.getElementsByTagName("script")[0]
-  var mscript = window.document.createElement("script")
-  mscript.src = url
-  mscript.async = true
-  mscript.defer = true
-  script0.parentNode.insertBefore(mscript, script0)
-
 }
 
 

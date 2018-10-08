@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import Venue from './Venue.js'
 
 class VenueList extends Component {
   render(){
-    const {venues} = this.props
+    const {venues,markers} = this.props
 
     return (
       <ol className="venueList">
         {venues && venues.map((myVenue, idx) =>(
-          <li key={idx} className="venueItem"
-            onClick={()=>{this.props.listItemClicked(myVenue, idx)}}>
-            {myVenue.venue.name}
-          </li>
-        ))}
+
+            <Venue key={idx}
+              myVenue={myVenue}
+              listItemClicked={this.props.listItemClicked}/>)
+
+        )}
       </ol>
     )
   }
