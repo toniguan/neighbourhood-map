@@ -106,10 +106,11 @@ class App extends Component {
     return (
       <div className="App">
         <header id="header">
-          <h1>San Francisco Museums</h1>
-          <a id="menu" onClick={this.toggleListView}>
-            <i class="fa fa-bars"></i>
-          </a>
+        <a class="header_menu" onClick={this.toggleListView}>
+          <i class="fa fa-bars"></i>
+        </a>
+        <h1 class="header_title">San Francisco Museums</h1>
+
         </header>
 
         <main id="maincontent">
