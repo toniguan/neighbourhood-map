@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+//the venue item in ListView
 class Venue extends Component {
   render(){
     const {myVenue} = this.props

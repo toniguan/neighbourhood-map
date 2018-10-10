@@ -6,7 +6,8 @@ class SideBar extends Component {
     query: "",
   }
 
-  filterVenues= ()=>{
+  //got the filtered venues based on query
+  filterVenues = ()=>{
     if(this.state.query){
       const places = this.props.venues.filter(
         place => place.venue.name.toLowerCase().includes(this.state.query)
@@ -16,6 +17,8 @@ class SideBar extends Component {
       return this.props.venues;
     }
   }
+
+  //if there is a query, set the matched markers to be visible and update the state of parent Component
   queryChange = e=>{
     this.setState({query : e.target.value.toLowerCase().trim()});
     const markers = this.props.venues.map(place=>{
@@ -30,10 +33,11 @@ class SideBar extends Component {
     });
     this.props.updateSuperState({markers});
   }
+
   render(){
     return (
       <div className="sideBar">
-        <input id="search" type="search" placeholder="Filter by Venue Names"
+        <input id="search" type="search" placeholder="Filter by Museum Names"
           onChange={this.queryChange}/>
         <VenueList
           venues={this.filterVenues()}
