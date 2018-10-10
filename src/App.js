@@ -29,13 +29,11 @@ class App extends Component {
     }
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
-        const venue = this.state.venues.find(venue=>venue.id===id)
         this.setState({aplace:response.data.response.venue })
       })
       .catch(error =>{
         console.log("ERROR!!"  + error)
       })
-    console.log(endPoint)
   }
   getVenues = ()=>{
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
@@ -44,12 +42,12 @@ class App extends Component {
       client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
       query: "museum",
       near: "San Francisco",
-      limit: 5,
+      limit: 20,
       v: "20180110"
     }
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
-        console.log(response.data.response)
+        console.log(response.data.response.groups[0].items)
         const venues = response.data.response.groups[0].items;
         const center = response.data.response.geocode.center;
         const markers = venues.map(place =>{
@@ -62,7 +60,6 @@ class App extends Component {
           }
         });
         this.setState({venues, center, markers});
-
       })
       .catch(error =>{
         console.log("ERROR!!"  + error)
@@ -91,42 +88,52 @@ class App extends Component {
  }
 
  toggleListView = ()=>{
-   console.log("menu is clicked")
    var drawer = document.getElementsByTagName('nav')[0];
-   console.log(drawer)
    if(drawer.className===""){
      drawer.className="open";
    }else{
      drawer.className="";
    }
-   console.log("after toggle "+drawer.className)
+ }
 
+ //when screen width < 600, click map will close listView
+ mapClicked = ()=>{
+   var width = window.innerWidth
+                || document.documentElement.clientWidth
+                || document.body.clientWidth;
+   var drawer = document.getElementsByTagName('nav')[0];
+   if(width < 600 && drawer.className==="open" ){
+     drawer.className = "";
+   }
  }
   render() {
     return (
       <div className="App">
         <header id="header">
-        <a class="header_menu" onClick={this.toggleListView}>
-          <i class="fa fa-bars"></i>
-        </a>
-        <h1 class="header_title">San Francisco Museums</h1>
-
+          <a  tabIndex="0" className="header_menu" onClick={this.toggleListView}>
+            <i className="fa fa-bars"></i>
+          </a>
+          <h1 className="header_title">San Francisco Museums</h1>
         </header>
 
         <main id="maincontent">
           <nav>
-          <SideBar {...this.state}
-            listItemClicked={this.listItemClicked}/>
-            </nav>
-          <Map {...this.state}
-            markerClicked= {this.markerClicked}
-            closeAllMarkers={this.closeAllMarkers}/>
+            <SideBar {...this.state}
+              listItemClicked={this.listItemClicked}/>
+          </nav>
+          <div className="map">
+            <Map {...this.state}
+              markerClicked= {this.markerClicked}
+              mapClicked={this.mapClicked}
+              closeAllMarkers={this.closeAllMarkers}/>
+          </div>
+
         </main>
-        <footer id="footer">Using Google Maps and Foursqure API</footer>
+          <footer id="footer">Using Google Maps and Foursqure API</footer>
+
       </div>
     )
   }
 }
-
 
 export default App;

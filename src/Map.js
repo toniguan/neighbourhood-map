@@ -2,12 +2,15 @@
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps"
 import React, { Component } from 'react';
 
+
+
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
     defaultZoom={8}
     zoom={props.zoom}
     defaultCenter={{ lat: 37.77493, lng: 1-122.41942 }}
     center={props.center}
+    onClick={e=>{props.mapClicked()}}
   >
 
     {props.markers &&

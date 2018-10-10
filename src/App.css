@@ -5,6 +5,8 @@ html, body {
   padding: 0;
   font-size: 10px;
   font-family: sans-serif;
+  background-color: #fdfdfd;
+  position:relative;
 }
 
 
@@ -12,31 +14,35 @@ html, body {
   text-align: center;
   width : 100vw;
   height : 100vh;
+  padding: 0;
+  margin:0;
 }
 
 
 #header {
   width: 100%;
-  min-height: 56px;
+  min-height: 60px;
   background-color: #252831;
   text-transform: uppercase;
   color: white;
   letter-spacing: 1px;
+  z-index: 200;
 }
 
 .header_title{
   display: inline-block;
-  padding: 1em 1em 1em 1.5em;
+  padding: 1em 0 1em 0.5em;
   font-size: 1.5rem;
-  position: absolute;
-  left: 0;
   margin: 0;
+  position: absolute;
+  left: 20px;
+
 }
 
 .header_menu {
   display: inline-block;
   position: absolute;
-  right: 0;
+  right: 20px;
   padding: 1em;
   font-size: 1.5rem;
 }
@@ -47,9 +53,12 @@ html, body {
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
-  padding: 10px 0 10px 0;
+  /*padding: 10px 0 10px 0;*/
+  line-height: 35px;
   text-align: center;
   text-transform: uppercase;
+  z-index: 200;
+  display: block;
 }
 
 
@@ -66,6 +75,7 @@ a:hover, a:focus {
   padding: 1rem;
   height: 2rem;
   font-size: 1.5rem;
+  box-shadow: 1px 1px 1px grey;
 }
 
 .venueList{
@@ -91,28 +101,31 @@ main{
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 85%;
+  height : 100%;
 }
-Map{
+.map{
   width: 100%;
-  height:85%;
+  height: 100%;
   z-index: 99;
-  position: relative;
+  position: absolute;
+  right: 0;
 }
 
 nav{
-  z-index: 999;
-  height: 85%;
+  z-index: 199;
   width: 300px;
-  position: absolute;
+  max-width: 100%;
+  position: relative;
   /* This trasform moves the drawer off canvas. */
   -webkit-transform: translate(-300px, 0);
   transform: translate(-300px, 0);
   /* Optionally, we animate the drawer. */
   transition: transform 0.3s ease;
+  background-color: #546276;
+  /*flex: 1;*/
+  height: calc(100vh-60px);
+  overflow-y: scroll;
 }
-
-
 
 nav.open {
   -webkit-transform: translate(0, 0);
@@ -123,12 +136,27 @@ nav.open {
   nav {
     position: relative;;
     transform: translate(0,0);
-    width: 25%;
+
   }
-  Map {
-    width: 75%;
+  .map {
+    position: relative;
+    width:calc(100vw-300px);
+  }
+
+  .header_title{
+    position: relative;
+    text-align: center;
+    font-size: 2rem;
   }
   #menu {
     display: inline;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  body{
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
