@@ -23,10 +23,11 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
           animation = {marker.isOpen ? google.maps.Animation.BOUNCE:""}>
           {marker.isOpen && props.aplace.bestPhoto &&(
             <InfoWindow onCloseClick={props.closeAllMarkers}>
-              <React.Fragment>
-                <img src={`${props.aplace.bestPhoto.prefix}200x200${props.aplace.bestPhoto.suffix}`} alt=""/>
-                <p>{props.aplace.name}</p>
-              </React.Fragment>
+              <div className="venue-details">
+                <img src={`${props.aplace.bestPhoto.prefix}200x200${props.aplace.bestPhoto.suffix}`} alt={props.aplace.description}/>
+                <p className="venue-name">{props.aplace.name}</p>
+                <p className="venue-rating">rating : {props.aplace.rating}</p>
+              </div>
             </InfoWindow>)}
         </Marker>
     ))}

@@ -4,23 +4,28 @@ import axios from 'axios'
 import SideBar from './SideBar.js'
 import Map from './Map.js'
 
+
+const screenWidth = window.innerWidth
+             || document.documentElement.clientWidth
+             || document.body.clientWidth;
+
 class App extends Component {
   state = {
     venues : [],
-    center :[],
-    markers :[],
+    center : [],
+    markers : [],
     zoom : 13,
-    aplace : {},
+    aplace : {}, //store the details for a selected place
     updateSuperState: obj =>{
       this.setState(obj);
     }
-
   }
 
   componentDidMount() {
     this.getVenues();
   }
-  getVenueDetails=(id)=>{
+
+  getVenueDetails = (id)=>{
     const endPoint = `https://api.foursquare.com/v2/venues/${id}?`
     const parameters = {
       client_id: "OBRGOOQFRBSSSK35KAXHZ3L0BP24QE5MYPNDLGY1DZXMT00U",
@@ -29,12 +34,14 @@ class App extends Component {
     }
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
-        this.setState({aplace:response.data.response.venue })
+        this.setState({aplace:response.data.response.venue})
       })
       .catch(error =>{
         console.log("ERROR!!"  + error)
       })
   }
+
+  //get 20 museums in San Francisco area
   getVenues = ()=>{
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
@@ -47,7 +54,7 @@ class App extends Component {
     }
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response =>{
-        console.log(response.data.response.groups[0].items)
+        //console.log(response.data.response.groups[0].items)
         const venues = response.data.response.groups[0].items;
         const center = response.data.response.geocode.center;
         const markers = venues.map(place =>{
@@ -74,6 +81,7 @@ class App extends Component {
    this.setState({markers : myMarkers})
  }
 
+ //marker click will open infowindow
  markerClicked = (marker)=>{
    this.closeAllMarkers();
    this.setState({aplace : {}})
@@ -82,12 +90,16 @@ class App extends Component {
    this.getVenueDetails(marker.id)
  }
 
+//select a listitem, same as click a marker
  listItemClicked = (venue)=>{
    var myMarker = this.state.markers.find(marker => marker.id === venue.venue.id)
    this.markerClicked(myMarker);
  }
 
+
  toggleListView = ()=>{
+   console.log("menu clicked")
+   if(screenWidth>=600) return;
    var drawer = document.getElementsByTagName('nav')[0];
    if(drawer.className===""){
      drawer.className="open";
@@ -98,11 +110,10 @@ class App extends Component {
 
  //when screen width < 600, click map will close listView
  mapClicked = ()=>{
-   var width = window.innerWidth
-                || document.documentElement.clientWidth
-                || document.body.clientWidth;
+   console.log("map is clicked")
+   if(screenWidth>=600) return;
    var drawer = document.getElementsByTagName('nav')[0];
-   if(width < 600 && drawer.className==="open" ){
+   if(drawer.className==="open" ){
      drawer.className = "";
    }
  }
@@ -110,9 +121,9 @@ class App extends Component {
     return (
       <div className="App">
         <header id="header">
-          <a  tabIndex="0" className="header_menu" onClick={this.toggleListView}>
+          <div tabIndex="0" className="header_menu" onClick={this.toggleListView}>
             <i className="fa fa-bars"></i>
-          </a>
+          </div>
           <h1 className="header_title">San Francisco Museums</h1>
         </header>
 
