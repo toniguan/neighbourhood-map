@@ -98,7 +98,7 @@ class App extends Component {
 
 
  toggleListView = ()=>{
-   console.log("menu clicked")
+   //console.log("menu clicked")
    if(screenWidth>=600) return;
    var drawer = document.getElementsByTagName('nav')[0];
    if(drawer.className===""){
@@ -110,7 +110,7 @@ class App extends Component {
 
  //when screen width < 600, click map will close listView
  mapClicked = ()=>{
-   console.log("map is clicked")
+   //console.log("map is clicked")
    if(screenWidth>=600) return;
    var drawer = document.getElementsByTagName('nav')[0];
    if(drawer.className==="open" ){
