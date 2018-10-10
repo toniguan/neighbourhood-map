@@ -121,7 +121,7 @@ class App extends Component {
     return (
       <div className="App">
         <header id="header">
-          <div tabIndex="0" className="header_menu" onClick={this.toggleListView}>
+          <div tabIndex="0" aria-label="menu" className="header_menu" onClick={this.toggleListView}>
             <i className="fa fa-bars"></i>
           </div>
           <h1 className="header_title">San Francisco Museums</h1>
@@ -132,16 +132,14 @@ class App extends Component {
             <SideBar {...this.state}
               listItemClicked={this.listItemClicked}/>
           </nav>
-          <div className="map">
+          <div className="map" role="application" aria-label="map">
             <Map {...this.state}
               markerClicked= {this.markerClicked}
               mapClicked={this.mapClicked}
               closeAllMarkers={this.closeAllMarkers}/>
           </div>
-
         </main>
-          <footer id="footer">Using Google Maps and Foursqure API</footer>
-
+        <footer id="footer">Using Google Maps and Foursqure API</footer>
       </div>
     )
   }
