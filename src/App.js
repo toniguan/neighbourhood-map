@@ -9,6 +9,13 @@ const screenWidth = window.innerWidth
              || document.documentElement.clientWidth
              || document.body.clientWidth;
 
+const fq_id="RZANV552KJF0S0DUSR0TPJW0O2C5PCA2124JLGYYENM0GBSA"
+const fq_secret="LFF44ROWN3QJDNSBD3JV5ZDIKL5LS0OVHFPP5RLDMZLHCDG0"
+/*
+const fq_id="OBRGOOQFRBSSSK35KAXHZ3L0BP24QE5MYPNDLGY1DZXMT00U";
+const fq_secret="QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K";*/
+
+
 class App extends Component {
   state = {
     venues : [],
@@ -28,8 +35,8 @@ class App extends Component {
   getVenueDetails = (id)=>{
     const endPoint = `https://api.foursquare.com/v2/venues/${id}?`
     const parameters = {
-      client_id: "OBRGOOQFRBSSSK35KAXHZ3L0BP24QE5MYPNDLGY1DZXMT00U",
-      client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
+      client_id: fq_id,
+      client_secret: fq_secret,
       v: "20180110"
     }
     axios.get(endPoint + new URLSearchParams(parameters))
@@ -45,8 +52,8 @@ class App extends Component {
   getVenues = ()=>{
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
-      client_id: "OBRGOOQFRBSSSK35KAXHZ3L0BP24QE5MYPNDLGY1DZXMT00U",
-      client_secret: "QRSRJ3JRCOSYGBWY1QYAUYP1GYGDJOSYJZGQHNLPPSR3U00K",
+      client_id: fq_id,
+      client_secret: fq_secret,
       query: "museum",
       near: "San Francisco",
       limit: 20,

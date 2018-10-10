@@ -17,7 +17,7 @@ This project is part of Udacity FrontEnd Nanodegree program. The Neighborhood ma
 
 ## Credits
 * [Forrest walkthrough](https://www.youtube.com/playlist?list=PL4rQq4MQP1crXuPtruu_eijgOUUXhcUCP)
-* [EMEA walkthrough webinar](https://www.youtube.com/watch?v=Uw5Ij56RhME)
+* [Elharony walkthrough webinar](https://www.youtube.com/channel/UCcWSbBe_s-T_gZRnqFbtyIA)
 * [Google Maps API](https://cloud.google.com/maps-platform/)
 * [Foursquare API](https://foursquare.com/developers/apps)
 * [Axios API](https://www.npmjs.com/package/axios)

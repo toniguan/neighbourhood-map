@@ -8,8 +8,8 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
     defaultZoom={8}
     zoom={props.zoom}
-    defaultCenter={{ lat: 37.77493, lng: 1-122.41942 }}
-    center={props.center}
+    defaultCenter={{ lat: 37.77493, lng: -122.41942 }}
+    //center={{ lat: 37.77493, lng: -122.41942 }}
     onClick={e=>{props.mapClicked()}}
   >
 
