@@ -2,7 +2,10 @@
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps"
 import React, { Component } from 'react';
 
-
+//global function, automatically called when authentication failed
+window.gm_authFailure= ()=>{
+    window.alert("Google maps failed to load!")
+}
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
